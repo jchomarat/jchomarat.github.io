@@ -7,7 +7,7 @@ img: posts/2019-12-04-back-in-the-game/cover.jpg
 fig-caption: Pexel.com
 tags: [Other]
 ---
-After a few years without bloging (R.I.P SharePointOfView back in the days), I am back. I am not saying that what I have to say will change the world, but blogging allows me to share my experience, discoveries and sometimes, best practices - and let's face it: as Albert Einstein said 
+After a few years without bloging (R.I.P SharePointOfView back in the days), I am back. I am not saying that what I have to say will change the world, but blogging allows me to share my experience, discoveries and sometimes, best practices - and let's face it, as Albert Einstein said:
 
 >If you can't explain it simply, you don't understand it well enough
 
