@@ -1,0 +1,35 @@
+title: Julien Chomarat
+description: > 
+  Everything about development & geek stuff.
+permalink: ':title/'
+baseurl: ""
+url: ""
+site-twitter:
+
+# Author Settings
+author: Julien Chomarat # add your name
+author-img: jchomarat.jpg # add your photo
+about-author: I am a Software Engineer focusing on Azure development in different technologies.
+social-twitter: jchomarat
+social-facebook: # add your Facebook handle
+social-github: jchomarat # add your Github handle
+social-linkedin: julienchomarat
+social-email: 
+
+# Disqus
+discus-identifier: #jchomarat
+
+# Tracker
+analytics: # Google Analytics
+
+# Build Settings
+markdown: kramdown
+plugins:
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jemoji
+
+paginate: 8
+paginate_path: "/page/:num"
+
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock"]
