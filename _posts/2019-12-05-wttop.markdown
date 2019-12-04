@@ -1,0 +1,10 @@
+---
+layout: post
+title: Fancy system monitor wttop
+date: 2019-12-05 20:00:00 +0100
+description: Let's have fun with the new Windows Terminal
+img: 
+fig-caption: 
+tags: [terminal, c#]
+---
+Hey hey
