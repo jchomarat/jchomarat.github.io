@@ -1,10 +1,83 @@
 ---
 layout: post
 title: Fancy system monitor wttop
-date: 2019-12-05 20:00:00 +0100
+date: 2019-12-04 10:00:00 +0100
 description: Let's have fun with the new Windows Terminal
-img: 
+img: posts/2019-12-05-wttop/cover.png
 fig-caption: 
-tags: [terminal, c#]
+tags: [terminal, c#, opensource]
 ---
-Hey hey
+Maybe it's because I am forty something, I started using computers when the UI was not at its best. Therefore, using command lines in a terminal was part of *what we had to do*. But the thing is that I am still into terminals! Back in the days, the best tools were actually build for terminals. And to be honest, today, as a Software Engineer working on several technologies, I am still using a terminal on a daily basis.
+
+So when Microsoft released the **New Window Terminal** (simple but yet amazing product name), I installed it and I have been using it since its availability during the summer 2019.
+
+## Why does it matter?
+
+It does actually, there are tons of things when you do development that you'd better do on a terminal: ssh, git, dotnetcore, node, python etc.. In parallel, I have always liked system monitor to see in real time the state of my computer. Setting up the *perfect* computer, configuration, optimization is key for our job. As a terminal fan-boy, I am fan of Linux's system monitors such as [gtop](https://github.com/aksakalli/gtop){:target="_blank"} or [htop](https://github.com/hishamhm/htop){:target="_blank"}. So I told myself, and I quote:
+
+> I want one for Windows on the New Windows Terminal
+
+## Tada ...
+
+Here is an open source-do-whatever-with-it project that I have worked on, with also a super-fancy-marketing-proven name: **wttop**, which stands for Windows Terminal Top.
+
+This initial version displays the following widgets:
+
+* Machine name / version / uptime
+* CPU activity (virtual CPUs)
+* RAM usage
+* Network activity
+* Disk activity (aggregation of all disks)
+* List of top 15 processes
+
+Today it works only on Windows using [dotnetcore](https://github.com/dotnet/core){:target="_blank"}. It was made so that it *could* be ported to OSX and Linux. To do so, someone would have to implement the interface [ISystemInfo](https://github.com/jchomarat/wttop/blob/master/Core/ISystemInfo.cs){:target="_blank"} for both systems. 
+
+
+~~~ csharp
+using System.Collections.Generic;
+
+namespace wttop.Core {
+    
+    public interface ISystemInfo
+    {
+        OSInfo GetOSInfo();
+
+        int GetCPUsCount();
+
+        IEnumerable<Cpu> GetCPUsUsage();
+
+        Memory GetMemoryUsage();
+
+        Network GetNetworkStatistics();
+
+        Process GetProcessActivity();
+
+        Disk GetDiskActivity();
+    }
+}
+~~~
+
+For Windows, I used [WMI](https://docs.microsoft.com/en-US/dotnet/framework/wcf/diagnostics/wmi/wmi-class-reference){:target="_blank"} to get system informations. I know it is not the most optimized approach, but at the time, as far as I knew, dotnetcore did not propose a better option.
+
+For the UI, I relied on the excellent library [Terminal.Gui](https://github.com/migueldeicaza/gui.cs){:target="_blank"}, freely available on Github. It is pretty simple to use. For instance, to create a new application, you would us the following code:
+
+~~~ csharp
+var top = Application.Top;
+
+// Creates the top-level window to show
+var win = new Window("My application title")
+{
+    X = 0,
+    Y = 0,
+
+    Width = Dim.Fill(),
+    Height = Dim.Fill()
+};
+top.Add(win);
+~~~
+
+This creates an application, starting line 0 and column 0, and filling in the entire space available. Easy!
+
+You want to try it, go get it [there](https://github.com/jchomarat/wttop/releases){:target="_blank"}!
+
+More information and how to install, just go to the [project page](https://github.com/jchomarat/wttop). 
