@@ -4,20 +4,24 @@ title: Back in the game!
 date: 2019-12-04 13:30:00 +0100
 description: It's good to blog again!
 img: posts/2019-12-04-back-in-the-game/cover.jpg
-fig-caption: Credits https://www.pexels.com/@hitarth-jadhav-57415
+fig-caption: Pexel.com
 tags: [Other]
 ---
-Introduction
+After a few years without bloging (R.I.P SharePointOfView back in the days), I am back. I am not saying that what I have to say will change the world, but blogging allows me to share my experience, discoveries and sometimes, best practices - and let's face it: as Albert Einstein said 
 
-## Level 1
+>If you can't explain it simply, you don't understand it well enough
 
-Text
+therefore, writing will allow me to make sure I've understood what I am sharing (well there is a debat around who actually said it, but you get the point).
 
->Some highlight text
+## What is the plan?
 
-Text
+![Ze plan]({{site.baseurl}}/assets/img/posts/2019-12-04-back-in-the-game/plan.jpg){:width="200px"}
 
-* List
-* Item
+Well, it's pretty simple:
 
-Other text!
+* share open [source projects](https://github.com/jchomarat) I am involved in,
+* share best practices
+* share how-to on struggle I have and on which I found an *answer* or a *way to do it*
+* and I'll see along the way ...
+
+Stay tuned, and thanks for reading

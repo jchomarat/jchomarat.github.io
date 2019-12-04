@@ -9,7 +9,7 @@ site-twitter:
 # Author Settings
 author: Julien Chomarat # add your name
 author-img: jchomarat.jpg # add your photo
-about-author: I am a Software Engineer focusing on Azure development in different technologies.
+about-author: Actor, danser, writer, investor ... nah, just a developer sharing his experience.
 social-twitter: jchomarat
 social-facebook: # add your Facebook handle
 social-github: jchomarat # add your Github handle
@@ -28,6 +28,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jemoji
+  - jekyll-feed
 
 paginate: 8
 paginate_path: "/page/:num"
