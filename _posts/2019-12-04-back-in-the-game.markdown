@@ -19,7 +19,7 @@ therefore, writing will allow me to make sure I've understood what I am sharing 
 
 Well, it's pretty simple:
 
-* share open [source projects](https://github.com/jchomarat) I am involved in,
+* share open [source projects](https://github.com/jchomarat){:target="_blank"} I am involved in,
 * share best practices
 * share how-to on struggle I have and on which I found an *answer* or a *way to do it*
 * and I'll see along the way ...
