@@ -6,6 +6,7 @@ description: It's good to blog again!
 img: posts/2019-12-04-back-in-the-game/cover.jpg
 fig-caption: Pexel.com
 tags: [Other]
+guid: 18d872ca-89ec-46dd-aa8e-063431285571
 ---
 After a few years without bloging (R.I.P SharePointOfView back in the days), I am back. I am not saying that what I have to say will change the world, but blogging allows me to share my experience, discoveries and sometimes, best practices - and let's face it, as Albert Einstein said:
 

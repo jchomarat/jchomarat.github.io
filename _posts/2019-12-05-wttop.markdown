@@ -6,6 +6,7 @@ description: Let's have fun with the new Windows Terminal
 img: posts/2019-12-05-wttop/cover.png
 fig-caption: 
 tags: [terminal, c#, opensource]
+guid: b296bb82-64e7-468f-823a-13bf941c3e06
 ---
 Maybe it's because I am forty something, I started using computers when the UI was not at its best. Therefore, using command lines in a terminal was part of *what we had to do*. But the thing is that I am still into terminals! Back in the days, the best tools were actually build for terminals. And to be honest, today, as a Software Engineer working on several technologies, I am still using a terminal on a daily basis.
 
