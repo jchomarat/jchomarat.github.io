@@ -40,7 +40,7 @@ class hangLoose {
           PartitionKey: {'_': 'HangLoose'},
           RowKey: {'_': this.pageGuid},
           Count: {'_': newCount},
-          Title: {'_': this.title}
+          Title: {'_': this.pageTitle}
       };
 
       this.tableService.insertOrReplaceEntity(this.storageTableName, e, function(error, result, response) {
