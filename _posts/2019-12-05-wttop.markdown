@@ -13,13 +13,15 @@ So when Microsoft released the **New Window Terminal** (simple but yet amazing p
 
 ## Why does it matter?
 
-It does actually, there are tons of things when you do development that you'd better do on a terminal: ssh, git, dotnetcore, node, python etc.. In parallel, I have always liked system monitor to see in real time the state of my computer. Setting up the *perfect* computer, configuration, optimization is key for our job. As a terminal fan-boy, I am fan of Linux's system monitors such as [gtop](https://github.com/aksakalli/gtop){:target="_blank"} or [htop](https://github.com/hishamhm/htop){:target="_blank"}. So I told myself, and I quote:
+It does actually, there are tons of things when you do development that you'd better do on a terminal: ssh, git, dotnetcore, node, python etc.. In parallel, I have always liked system monitor to see in real time the state of my computer because we spend long time setting it up and making sure it is optimized - it's key for our job. As a terminal fan-boy, I am fan of Linux's system monitors such as [gtop](https://github.com/aksakalli/gtop){:target="_blank"} or [htop](https://github.com/hishamhm/htop){:target="_blank"}. So recently I told myself, and I quote:
 
 > I want one for Windows on the New Windows Terminal
 
 ## Tada ...
 
-Here is an open source-do-whatever-with-it project that I have worked on, with also a super-fancy-marketing-proven name: **wttop**, which stands for Windows Terminal Top.
+Here is an open source-do-whatever-with-it project that I have worked on, with also a super-fancy name: **wttop**, which stands for Windows Terminal Top.
+
+![Ze plan]({{site.baseurl}}/assets/img/posts/2019-12-05-wttop/cover.png){:width="500px"}
 
 This initial version displays the following widgets:
 
@@ -57,9 +59,11 @@ namespace wttop.Core {
 }
 ~~~
 
-For Windows, I used [WMI](https://docs.microsoft.com/en-US/dotnet/framework/wcf/diagnostics/wmi/wmi-class-reference){:target="_blank"} to get system informations. I know it is not the most optimized approach, but at the time, as far as I knew, dotnetcore did not propose a better option.
+For Windows, I used [WMI](https://docs.microsoft.com/en-US/dotnet/framework/wcf/diagnostics/wmi/wmi-class-reference){:target="_blank"} to get system informations. I know it is not the most optimized/sexy approach, but at the time, as far as I knew, dotnetcore did not propose a better option.
 
-For the UI, I relied on the excellent library [Terminal.Gui](https://github.com/migueldeicaza/gui.cs){:target="_blank"}, freely available on Github. It is pretty simple to use. For instance, to create a new application, you would us the following code:
+For the UI, I relied on the excellent library [Terminal.Gui](https://github.com/migueldeicaza/gui.cs){:target="_blank"}, freely available on Github. It is pretty simple to use.
+
+For instance, to create a new application, you would us the following code:
 
 ~~~ csharp
 var top = Application.Top;
