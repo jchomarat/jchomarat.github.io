@@ -1,0 +1,37 @@
+{% if site.hangLoose-azStorage and page.guid %}
+    <a class="hangloose-link"><img src="{{site.baseurl}}/assets/img/HangLoose.png" /><label>0</label></a>
+    <script src="{{site.baseurl}}/assets/js/azure-storage.table.min.js"></script>
+    <script src="{{site.baseurl}}/assets/js/hangLoose.js"></script>
+    <script>
+        (async function() {
+            const maxClicks = 1;
+            var clicksCount = 0;
+            
+            var hl = new hangLoose(
+                '{{page.guid}}',
+                '{{site.hangLoose-azStorage}}',
+                '{{site.hangLoose-azStorageSas}}',
+                '{{site.hangLoose-azStorageTableName}}',
+                '{{page.title}}'
+            );
+            
+            // Get count from page {{page.guid}}
+            document.querySelector(".hangloose-link label").innerHTML = await hl.getCount();
+            
+            // Attach event receiver to click
+            var a = document.querySelector("a.hangloose-link");
+            a.addEventListener('click', async function (event) {
+                if (clicksCount < maxClicks) {
+                    event.preventDefault();
+                    document.querySelector(".hangloose-link label").innerHTML = await hl.incrementCount();
+                    clicksCount++;
+                }
+                else {
+                    // disable link
+                    a.classList.add('hanglosse-link-disabled');
+                }
+            }, false);
+        })();
+    </script>
+{% endif %}
+  
