@@ -16,8 +16,10 @@ social-github: jchomarat # add your Github handle
 social-linkedin: julienchomarat
 social-email: 
 
-# Disqus
-discus-identifier: #jchomarat
+# Hang loose
+hangLoose-azStorage: juchoblogstorage 
+hangLoose-azStorageSas: ?sv=2019-02-02&ss=t&srt=sco&sp=rwacu&se=2021-12-05T21:57:04Z&st=2019-12-04T13:57:04Z&spr=https&sig=QK3fx2%2BGd1a3RwsJmpQB6p%2FMbx4TaocIh6s8wI5Di4E%3D
+hangLoose-azStorageTableName: blogHangLoose
 
 # Tracker
 analytics: # Google Analytics

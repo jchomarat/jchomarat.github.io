@@ -1479,3 +1479,25 @@ a.newer-posts:hover {
     font-size: 21px;
   }
 }
+
+/* hangLoose styles */
+.hangloose-link {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  cursor: pointer;
+}
+
+.hanglosse-link-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.hangloose-link img {
+  height: 22px;
+}
+
+.hangloose-link label {
+  margin-left: 3px;
+  font-weight: bolder;
+  color: #007F0E;
+}
