@@ -3,7 +3,7 @@ layout: post
 title: [French] Article dans Programmez sur WSL
 date: 2020-02-03 10:00:00 +0100
 description: Tout ce dont vous avez besoin pour faire du développement Linux sous Windows
-img: posts/2020-02-03-wsl-article/cover.jpg
+img: posts/2020-02-03-wsl-article/cover.png
 fig-caption: 
 tags: [terminal, wsl, article]
 guid: b296bb82-64e7-468f-823a-13bf941c3e07
