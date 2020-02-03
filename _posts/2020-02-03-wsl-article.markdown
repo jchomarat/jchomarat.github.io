@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [French] Article dans Programmez sur WSL
+title: (French) Article dans Programmez sur WSL
 date: 2020-02-03 10:00:00 +0100
 description: Tout ce dont vous avez besoin pour faire du développement Linux sous Windows
 img: posts/2020-02-03-wsl-article/cover.png
