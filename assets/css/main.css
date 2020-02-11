@@ -1501,3 +1501,13 @@ a.newer-posts:hover {
   font-weight: bolder;
   color: #007F0E;
 }
+
+/* tasks */
+ul.task-list {
+  list-style-type: none;
+  padding-inline-start: 15px;
+}
+
+input.task-list-item-checkbox {
+  margin-right: 5px;
+}
