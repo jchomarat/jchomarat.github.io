@@ -25,11 +25,11 @@ I have seen on [Github](https://github.com/) several initiatives to have nvalt *
 
 Notes in [nvalt](https://brettterpstra.com/projects/nvalt/) can be stored in [Simple Note](https://simplenote.com/), hence accessible from Windows using the [Simple Note](https://simplenote.com/) client. A client is also available in iOS & Android. Again, [Simple Note](https://simplenote.com/) is lacking the value [nvalt](https://brettterpstra.com/projects/nvalt/) is bringing.
 
-I have plans to make my own tool, in Python with QT, that will be cross platform, but it takes time. So in the meantime I needed to come up with a solution.
+I have plans to make my own tool, in Python with QT/Tkinter, that will be cross platform, but it takes time. So in the meantime I needed to come up with a solution.
 
 # What are we going to do
 
-This being said, I had to make trade-offs on my needs to achieve what I want.
+This being said, I had to make trade-offs on my needs to achieve what I wanted.
 
 Talking about needs, what do I need?
 
