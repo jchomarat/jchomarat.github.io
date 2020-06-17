@@ -17,9 +17,9 @@ social-linkedin: julienchomarat
 social-email: 
 
 # Hang loose
-hangLoose-azStorage: juchoblogstorage 
-hangLoose-azStorageSas: ?sv=2019-02-02&ss=t&srt=sco&sp=rwacu&se=2021-12-05T21:57:04Z&st=2019-12-04T13:57:04Z&spr=https&sig=QK3fx2%2BGd1a3RwsJmpQB6p%2FMbx4TaocIh6s8wI5Di4E%3D
-hangLoose-azStorageTableName: blogHangLoose
+hangLoose-azStorage: jsharedstorage 
+hangLoose-azStorageSas: ?sv=2019-10-10&ss=t&srt=sco&sp=rwdlacu&se=2025-06-17T20:48:24Z&st=2020-06-17T12:48:24Z&spr=https&sig=YbFqXn4zrivjoAhNZsvUljlfxC2%2BgcLs8z%2FxWu%2B%2BOXo%3D
+hangLoose-azStorageTableName: blogHangloose
 
 # Tracker
 analytics: # Google Analytics
