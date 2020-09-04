@@ -2,7 +2,7 @@
 layout: post
 title: Using .Net Spark notebook in Azure Synapse
 date: 2020-09-04 10:00:00 +0100
-description: Here is a small sample of a C# notebook to manipulate and process data from a DataLake.
+description: Here is a small sample of a C# notebook to manipulate and process data from a data lake.
 img: posts/2020-09-04-synapse-net-spark/cover.png
 fig-caption: 
 tags: [Synapse, C#, Spark, Data]
@@ -10,52 +10,52 @@ guid: b296bb82-64e7-468f-823a-13bf941c3e10
 ---
 While attending an Openhack on Data wharehouse, we decided to go with [Azure Synapse Analytics](https://docs.microsoft.com/en-us/azure/synapse-analytics/overview-what-is), still in preview as in September 2020, to manage our entire data processing:
 
-1. Centralize data from various sources into a Data Lake
-2. Aggregate data of same type into one
-3. Build a [star schema](https://en.wikipedia.org/wiki/Star_schema) from this data
-4. Export it into SQL Server in order to analyse it via PowerBI
+1. Centralize data from various sources into a data lake,
+2. Aggregate data of same type into one,
+3. Build a [star schema](https://en.wikipedia.org/wiki/Star_schema) from this data,
+4. Export it into SQL Server to analyse it via PowerBI.
 
 *In the old days*, it would have required several different tools to complete all of these steps. But today, [Azure Synapse Analytics](https://docs.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) is one tool *to rule them all* ...
 
-The purpose of this post is not to show big data (mostly because it is not my job role and I would not be pertinent) but to show how a developer such as myself, who literally loves C#, can leverage that into big data.
+The purpose of this post is not to show big data (mostly because it is not my job role and I would not be pertinent) but to show how a developer such as myself, who literally loves C#, can leverage that into the big data world.
 
 # What is Azure Synapse Analytics
 
-From the official [documentation](https://docs.microsoft.com/en-US/azure/synapse-analytics/spark/apache-spark-overview), Azure Synapse Analytics is "one of Microsoft's implementations of Apache Spark in the cloud [...] Apache Spark being a parallel processing framework that supports in-memory processing to boost the performance of big-data analytic applications?".
+From the official [documentation](https://docs.microsoft.com/en-US/azure/synapse-analytics/spark/apache-spark-overview), Azure Synapse Analytics is "one of Microsoft's implementations of Apache Spark in the cloud [...] Apache Spark being a parallel processing framework that supports in-memory processing to boost the performance of big-data analytic applications".
 
-Why is it interesting now? The reason is simple: Synapse introduces an extra layer on top of the big data framework Apache Spark in .NET. So yes, we can now do *big data* using the langagues we love: Scala, Python and now C#!
+Why is it interesting? The reason is simple: Synapse introduces an extra layer on top of the big data framework Apache Spark in .NET. So yes, we can manipulate vast amount of data using the langagues we love : Scala, Python and now C#!
 
-We can see below this high level architecture of that implementation:
+We can see below this high-level architecture of that implementation:
 
 ![.NET Spark architecture]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/dotnet-spark-architecture.png){:width="500px"}
 
 # Use case
 
-Just for a kick start in .NET Spark, let's take a simple sample. I have a DataLake that contains an input CSV file listing movies. This DataLake is an [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-US/azure/storage/blobs/data-lake-storage-introduction) with a container called *input* in which the CSV file is stored:
+Just for a kick start in .NET Spark, let's take a simple sample. I have a data lake that contains an input CSV file that [lists movies](https://perso.telecom-paristech.fr/eagan/class/igr204/datasets). This data lake is an [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-US/azure/storage/blobs/data-lake-storage-introduction) with a container called *input* in which the CSV file is stored:
 
 ![CSV sample]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/sample-csv.png){:width="500px"}
 
-This is a raw dataset that we want to clean and prepare for analysis. Here are the stesp to clean our data
+This is a raw dataset that we want to clean and prepare for analysis. Here are the stesp to clean our data :
 1. Add a unique ID for our movies list,
-2. Extract subject into an external dataset, and store a subject ID instead
+2. Extract subject into an external dataset, and store a subject ID instead,
 3. Break actor and actress columns into an external dataset with a list of actors, both female and male,
-4. Add a mapping dataset actorsMovie to store the list of actors per movies
-5. Finally, generate a movie dataset with IDs (this work could also be done for Directors, but it is exactly as subjects)
+4. Add a mapping dataset actorsMovie to store the list of actors per movies,
+5. Finally, generate a movie dataset with IDs (this cleaning could also be done for Directors, but let's skip that for now).
 
 # Let's begin!
 
 ## Create a .NET Spark notebook
 
-[I assume here that you have an Azure Subscription, and in this subscription you have created an Azure Synapse Analytics resource].
+[I assume here that you have an [Azure subscription](https://portal.azure.com), and in this subscription, you have created an Azure Synapse Analytics resource].
 
-From the left menu, go to Develop, and add a new notebook. To prove that .NET works, here is a small exemple:
+From the left menu, go to Develop and add a new notebook. To prove that .NET works, here is a small exemple:
 
 
 ![notebook csharp support]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/notebook-dotnet-sample.png){:width="600px"}
 
 We can see that the language is .NET Spark (C#) (top right corner) along with a very basic C# code inside the notebook. And of course, it works!
 
-## Load our source csv into a data frame
+## Load our source CSV into a data frame
 
 First thing first, let's add a new cell in our notebook to load the CSV file from the data lake into a data frame:
 
@@ -68,7 +68,7 @@ var file = "/movies-dataset.csv";
 var adlsInputPath = $"abfss://{containerName}@{accountName}.dfs.core.windows.net/{file}";
 ```
 
-Make sure to adapt *accountName*, *containerName* and *file* variables.
+Make sure to adapt *accountName*, *containerName* and *file* variables. These variables will instruct Spark to go and get our source file from the data lake using the endpoint *adlsInputPath*.
 
 ## Display in the notebook this source data
 
@@ -92,13 +92,15 @@ Display(inputDataFrame);
 
 We first create a reader with a few options (presence of a header, delimimter and encoding). 
 
-We then add a new column do our data frame with a unique ID (because the source data did not have any) - and finally display this data frame using the function *Display*. Executing the cell (or pressing CTRL+Return) will result in:
+We then add a new column do our data frame with a unique ID (because the source data did not have any) - and finally display this data frame using the function *Display()*. Executing the cell (or pressing CTRL+Return) will result in:
 
 ![Source dataframe in notebook]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/notebook-source-dataframe.png){:width="600px"}
 
-## Extract dimensions into separate dataframes
+## Extract dimensions into separate data frames
 
-As we have discussed above, in our cleaning process, we want to extract dimensions from this main source file and only reference IDs. So let's extract Subject first. In a new cell, let's use the following code:
+As we have discussed above, in our cleaning process, we want to extract dimensions from this main source file and only reference IDs. So, let's extract Subject first.
+
+In a new cell, let's use the following code:
 
 ```csharp
 var subjectDataFrame = inputDataFrame
@@ -111,9 +113,11 @@ var subjectDataFrame = inputDataFrame
 // Display the DataFrame
 Display(subjectDataFrame);
 ```
-In the first 6 lignes, we select only Subject from the source data, remove duplicate and empty strings. We also add a column with a unique identifier - and we finally select the columns in the right order and properly sorted out. We obtain then a new data frame. We will deal with reinjecting the ID later.
+In the first 6 lignes, we select only Subject from the source data, remove duplicate and empty strings. We also add a column with a unique identifier - and we finally select the columns in the correct order and properly sorted out. We obtain a new data frame. We will deal with reinjecting the ID later, after exporting all our dimensions.
 
-Let's do the same procedure here with Actors. This dataset (found [here](https://perso.telecom-paristech.fr/eagan/class/igr204/datasets)) has 2 columns with the principal female and male actors. The idea here is to extract all these actors into a separate data frame with a unique ID. We will also need a link data frame to tell which movie has which actors. Below the tables to represent the final model we want:
+**Note that**, like PySpark (Python for Spark), we can chain our call: each method (*Select()*, *Filter()* returns a data frame object, so we can work directly on that output).
+
+Let's do the same procedure here with Actors. This dataset has 2 columns with the principal female and male actors. The idea here is to extract all these actors into a separate data frame with a unique ID. We will also need a link data frame to tell which movie has which actors. Below the tables to represent the final model we want:
 
 * **Actors**
 
@@ -133,7 +137,11 @@ Jane and John are actors of movie AAA
 
 * **Movies**
 
-The Movies data frame will contain nothing in particular as, because of the ID, we will be able to retreive the actors list.
+| MovieID  | Title  | ... |
+|---|---|---|
+| AAA | A great title | ... |
+
+The Movies data frame will contain nothing regadring actors as, because of the ID, we will be able to retreive the actors list.
 
 To achieve that, the code is a little bit more complex than for subject, but still easily doable in C#:
 
@@ -150,7 +158,7 @@ var actorDataFrame = inputDataFrame
 Display(actorDataFrame);
 ```
 
-We are using *union* here to aggregate a set of rows into one data frame (first list is the *Actor* selection and second one is *Actress* selection).
+We are using the method *Union()* here to aggregate a set of rows into one data frame (first list is the *Actor* selection and second one is *Actress* selection).
 
 ```csharp
 var actorsMovieDataFrame = inputDataFrame
@@ -163,9 +171,9 @@ var actorsMovieDataFrame = inputDataFrame
 
 Display(actorsMovieDataFrame);
 ```
-We aee using here the same approach to generate our *ActorsMovie* data frame.
+We are using here the same approach to generate our *ActorsMovie* data frame.
 
-## Optimize our Movie dataframe
+## Optimize our Movie data frame
 
 We have now extracted our dimensions (appart from Directors that we could have done also, but nothing new to learn here), let's generate our *Movies* data frame by removing *Subject*, *Actor*, *Actress* and left joining *SubjectID* from the *Subjects* data frame
 
@@ -180,16 +188,16 @@ Display(moviesDataFrame);
 
 ## Save our processed data back to the data lake
 
-We have done some (basic) data processing. We end up with four data frames in memory
+We have done some (basic) data processing. We end up with four data frames in memory:
 
 * Subject
 * Actor
 * ActorsMovie
 * Movies
 
-We need now to save that back into our data lake so that we can use PowerBI to analyse that. Of course, in this approach we will only have dimensions data and not facts (for a star schema) but again, the idea was to show some C# here ...
+We need now to save that back into our data lake so that we can use PowerBI to analyse it. Of course, at this stage we only have dimensions data and not facts (for a star schema), but again, the idea was to show some C# here.
 
-We have of course several options to save our data frame: csv, parquet, json or directly into an SQL database. Let's show a simple exemple with CSV:
+We have several options to save our data frame: *CSV*, *Parquet*, *json* or directly into a *SQL database*. Let's show a simple exemple with CSV:
 
 ```csharp
 // Destination
@@ -201,7 +209,9 @@ actorDataFrame.Write().Mode(SaveMode.Overwrite).Option("header", true).Csv(adlsP
 //.. etc for the other data frames
 ```
 
-To save in [parquet format](https://en.wikipedia.org/wiki/Apache_Parquet), we simply need to call the *Parquet* method instead of *Csv*.
+We need to define our destination endpoint, in the same storage account but in a different container. Calling the *Write()* method on our data frame will return a *DataFrameWriter* object. This object has various methods to save in various formats. Above we call *Csv()* to save it in a Csv format.
+
+To save in [parquet format](https://en.wikipedia.org/wiki/Apache_Parquet), we simply need to call the *Parquet* method instead of *Csv* one.
 
 And finally, if we want to export this clean data into SQL Server, we can use T-SQL command
 
@@ -213,16 +223,16 @@ WITH  (
 )
 ```
 
-This command will connect to the blob storage (data lake) (credentials are passed in the With option) and copied directly into SQL. This is one of the most efficient approach. To learn more about that, you can go [there](https://docs.microsoft.com/en-US/sql/t-sql/statements/copy-into-transact-sql?view=azure-sqldw-latest).
+This command will connect to the blob storage (data lake) (credentials are passed in the *With* statement) and copied directly into SQL. This is one of the most efficient approach. To learn more about that, you can go [there](https://docs.microsoft.com/en-US/sql/t-sql/statements/copy-into-transact-sql?view=azure-sqldw-latest).
 
-This command can be included into a pipeline process so that it occurs at the end of the notebook execution.
+This command can be included into a pipe process so that it occurs at the end of the notebook execution. And the beauty of Synapse is that you can do that diectly in Synapse!
 
 
 # Conclusion
 
 In this post we haven't learn anything in big data *per sé*, nor learn all the capabilities of Azure Synapse Analytics. We *did* see however how we can leverage our C#, and more generally .NET experience, into notebook for data processing. What we have noticed though is the objects used in C# are the same as for the other languages such as Python or Scala. That makes it easier to ramp up.
 
-You can find some resources below
+You can find additional resources below:
 
-* [Official .NET Spark documentation] (https://docs.microsoft.com/en-us/dotnet/api/?view=spark-dotnet)
-* [Synapse documentation] (https://docs.microsoft.com/en-US/azure/synapse-analytics/sql-data-warehouse/)
+* [Official .NET Spark documentation](https://docs.microsoft.com/en-us/dotnet/api/?view=spark-dotnet)
+* [Synapse documentation](https://docs.microsoft.com/en-US/azure/synapse-analytics/sql-data-warehouse/)
