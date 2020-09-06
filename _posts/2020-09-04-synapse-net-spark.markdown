@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Using .Net Spark notebook in Azure Synapse
+title: Using notebook with .Net Spark engine in Azure Synapse
 date: 2020-09-04 10:00:00 +0100
-description: Here is a small sample of a C# notebook to manipulate and process data from a data lake.
+description: Here is a small introduction to notebook using C# to manipulate and process data from a data lake.
 img: posts/2020-09-04-synapse-net-spark/cover.png
 fig-caption: 
 tags: [Synapse, C#, Spark, Data]
@@ -31,13 +31,14 @@ We can see below this high-level architecture of that implementation:
 
 # Use case
 
-Just for a kick start in .NET Spark, let's take a simple sample. I have a data lake that contains an input CSV file that [lists movies](https://perso.telecom-paristech.fr/eagan/class/igr204/datasets). This data lake is an [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-US/azure/storage/blobs/data-lake-storage-introduction) with a container called *input* in which the CSV file is stored:
+Just for a kick start in .NET Spark, let's take a simple use case. I have a data lake that contains an input CSV file that [lists movies](https://perso.telecom-paristech.fr/eagan/class/igr204/datasets). This data lake is an [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-US/azure/storage/blobs/data-lake-storage-introduction) with a container called *input* in which the CSV file is stored:
 
 ![CSV sample]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/sample-csv.png){:width="500px"}
 
-This is a raw dataset that we want to clean and prepare for analysis. Here are the stesp to clean our data :
+This is a raw dataset that we want to clean and prepare for analysis. Here are the steps to clean up our data :
+
 1. Add a unique ID for our movies list,
-2. Extract subject into an external dataset, and store a subject ID instead,
+2. Extract subject into an external dataset, and store a subject ID instead in the main data set,
 3. Break actor and actress columns into an external dataset with a list of actors, both female and male,
 4. Add a mapping dataset actorsMovie to store the list of actors per movies,
 5. Finally, generate a movie dataset with IDs (this cleaning could also be done for Directors, but let's skip that for now).
@@ -48,7 +49,7 @@ This is a raw dataset that we want to clean and prepare for analysis. Here are t
 
 [I assume here that you have an [Azure subscription](https://portal.azure.com), and in this subscription, you have created an Azure Synapse Analytics resource].
 
-From the left menu, go to Develop and add a new notebook. To prove that .NET works, here is a small exemple:
+From the left menu, go to Develop and add a new notebook. To validate that .NET works, here is a small snippet:
 
 
 ![notebook csharp support]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/notebook-dotnet-sample.png){:width="600px"}
@@ -92,7 +93,7 @@ Display(inputDataFrame);
 
 We first create a reader with a few options (presence of a header, delimimter and encoding). 
 
-We then add a new column do our data frame with a unique ID (because the source data did not have any) - and finally display this data frame using the function *Display()*. Executing the cell (or pressing CTRL+Return) will result in:
+We then add a new column do our data frame with a unique ID (because the source data did not have any) - and finally display this data frame using the function *Display()*. Executing the cell (or pressing CTRL+Return) will result in the following:
 
 ![Source dataframe in notebook]({{site.baseurl}}/assets/img/posts/2020-09-04-synapse-net-spark/notebook-source-dataframe.png){:width="600px"}
 
@@ -113,6 +114,7 @@ var subjectDataFrame = inputDataFrame
 // Display the DataFrame
 Display(subjectDataFrame);
 ```
+
 In the first 6 lignes, we select only Subject from the source data, remove duplicate and empty strings. We also add a column with a unique identifier - and we finally select the columns in the correct order and properly sorted out. We obtain a new data frame. We will deal with reinjecting the ID later, after exporting all our dimensions.
 
 **Note that**, like PySpark (Python for Spark), we can chain our call: each method (*Select()*, *Filter()* returns a data frame object, so we can work directly on that output).
@@ -195,7 +197,7 @@ We have done some (basic) data processing. We end up with four data frames in me
 * ActorsMovie
 * Movies
 
-We need now to save that back into our data lake so that we can use PowerBI to analyse it. Of course, at this stage we only have dimensions data and not facts (for a star schema), but again, the idea was to show some C# here.
+We need now to save that back into our data lake so that we can use PowerBI to analyse it. Of course, at this stage we only have dimensions tables and not fact tables (for a star schema), but again, the idea here is to show some C#.
 
 We have several options to save our data frame: *CSV*, *Parquet*, *json* or directly into a *SQL database*. Let's show a simple exemple with CSV:
 
@@ -209,7 +211,7 @@ actorDataFrame.Write().Mode(SaveMode.Overwrite).Option("header", true).Csv(adlsP
 //.. etc for the other data frames
 ```
 
-We need to define our destination endpoint, in the same storage account but in a different container. Calling the *Write()* method on our data frame will return a *DataFrameWriter* object. This object has various methods to save in various formats. Above we call *Csv()* to save it in a Csv format.
+We need to define our destination endpoint, in the same storage account but in a different container. Calling the *Write()* method on our data frame will return a *DataFrameWriter* object. This object has various methods to save in different formats. Above we call *Csv()* to save it in a Csv format.
 
 To save in [parquet format](https://en.wikipedia.org/wiki/Apache_Parquet), we simply need to call the *Parquet* method instead of *Csv* one.
 
@@ -225,7 +227,7 @@ WITH  (
 
 This command will connect to the blob storage (data lake) (credentials are passed in the *With* statement) and copied directly into SQL. This is one of the most efficient approach. To learn more about that, you can go [there](https://docs.microsoft.com/en-US/sql/t-sql/statements/copy-into-transact-sql?view=azure-sqldw-latest).
 
-This command can be included into a pipe process so that it occurs at the end of the notebook execution. And the beauty of Synapse is that you can do that diectly in Synapse!
+This command can be included into a pipeline process so that it occurs at the end of the notebook execution. And the beauty of Synapse is that you can do that diectly in Synapse!
 
 
 # Conclusion
