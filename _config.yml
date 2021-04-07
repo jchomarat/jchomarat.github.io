@@ -7,12 +7,12 @@ url: ""
 site-twitter:
 
 # Author Settings
-author: Julien Chomarat # add your name
-author-img: jchomarat.jpg # add your photo
+author: Julien Chomarat
+author-img: jchomarat.jpg
 about-author: Actor, dancer, writer, investor ... nah, just a developer sharing his experience!
 social-twitter: jchomarat
-social-facebook: # add your Facebook handle
-social-github: jchomarat # add your Github handle
+social-facebook: 
+social-github: jchomarat
 social-linkedin: julienchomarat
 social-email: 
 
@@ -22,7 +22,7 @@ hangLoose-azStorageSas: ?sv=2019-10-10&ss=t&srt=sco&sp=rwacu&se=2025-06-17T20:58
 hangLoose-azStorageTableName: blogHangloose
 
 # Tracker
-analytics: # Google Analytics
+analytics: 
 
 # Build Settings
 markdown: kramdown
