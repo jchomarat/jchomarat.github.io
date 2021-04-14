@@ -94,7 +94,7 @@ flake8==3.8.4
 
 *pytest* and *pytest-cov* will be used to handle unit tests and code coverage while *flake8* will be used as a linter check.
 
-There is also another important prerequisite: we are going to use a lot *bash* for our automation. In order to be able to run *bash* files, your development environment have to be one of the following:
+There is also another important prerequisite: we are going to use a lot *bash* for our automation. In order to be able to run *bash* files, your development environment has to be one of the following:
 
 * A Linux based [Dev Containers for VSCode](https://code.visualstudio.com/docs/remote/containers){:target="_blank"}. This is my preferred approach: each developers can share the same environment while working on any kind of workstation where you can run VScode & [Docker](https://www.docker.com/){:target="_blank"} (so basically Windows 10, MacOS and most of the Linux distribution),
 * If you do not want to use Dev Containers, your workstation must be able to run natively *bash*, hence you will need either:
@@ -292,7 +292,7 @@ test:
 	. ./utils/test.sh
 ```
 
-As you can see above, we are specifying *steps*, and each step call one of our *bash£ file.
+As you can see above, we are specifying *steps*, and each step call one of our *bash* file.
 
 So now, I can simply execute in my terminal:
 
