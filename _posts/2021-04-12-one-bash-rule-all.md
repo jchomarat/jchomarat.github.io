@@ -34,19 +34,23 @@ And finally, for the "more" subjective approach, *code review* is also a very im
 
 ## Continuous integration
 
-In our whole development life cycle, the most important moment where these checks need to run is during our *Continuous Integration*. One of the core engineering best practice is to have a common source control repository, such as Git (either on the [cloud](https://www.github.com){:target="_blank"} or on-prem) or [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/){:target="_blank"}.
+In our whole development life cycle, the most important moment where these checks need to run is during our *Continuous Integration*. One of the core engineering best practices is to have a common source control repository:
 
-For the rest of the this post I will assume that you are comfortable with [*Continuous Integration*](https://en.wikipedia.org/wiki/Continuous_integration){:target="_blank"} and pull request. A high-level definition of a pull request from [Wikipedia](https://en.wikipedia.org/wiki/Git){:target="_blank"} would be:
+* the source repository can be Git in [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/){:target="_blank"},
+* when Git is in the cloud, it can be [GitHub](https://www.github.com){:target="_blank"}, [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/){:target="_blank"} or others,
+* [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/){:target="_blank"} has two possible version control engines: Git or Team Foundation Version Control
+
+For the rest of the this post I will assume that you are comfortable with [*Continuous Integration*](https://en.wikipedia.org/wiki/Continuous_integration){:target="_blank"} and pull requests. A high-level definition of a pull request from [Wikipedia](https://en.wikipedia.org/wiki/Git){:target="_blank"} would be:
 
 > A pull request is a request by one user to merge a branch of their repository fork into another repository sharing the same history.
 
 So, as a developer, I create a PR (pull request) to merge my code to an upstream branch. That means that "my code" will move from my local development environment to the remote one, hence, making it available to the rest of the developers (or the rest of the world if the project I am contributing to is available to all). Hmm, I think this would be a good timing to run these automatic checks :)
 
-This is where the *Continuous Integration* (CI) practice of DevOps will be applied. By creating a PR, a CI *pipeline* starts (or *Action* if you're using Github) - and this pipeline executes the automatic tests we've seen above. If one of them fails, the PR fails, and the developer needs to fix the issue and re-submit a PR.
+This is where the *Continuous Integration* (CI) practice of DevOps will be applied. By creating a PR, a CI *pipeline* starts (or *Action* if you're using Github) - and this pipeline executes the automatic tests we've seen above. If one of them fails, the PR fails, and the developer needs to fix the issue.
 
 If the PR validation passes, another developer needs to "approve" it manually. This is the *code review* part (and of course, all of this is not mandatory, these are just settings and policies to activate).
 
-As soon as my peer approves the PR, the code is merged to the targeted branch.
+As soon as my peer approves the PR, the code can be merged to the targeted branch, either manually or automatically (in [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/){:target="_blank"}, there is an auto-complete flag that can set to merge a PR once it is validated)
 
 We will now focus on the automatic tests and see how we can optimize them with a minimum impacts on developers.
 
@@ -90,7 +94,15 @@ flake8==3.8.4
 
 *pytest* and *pytest-cov* will be used to handle unit tests and code coverage while *flake8* will be used as a linter check.
 
-If you are not using Linux-based Dev Containers, the following can only work on *nix system: [WSL 2 on Windows](https://docs.microsoft.com/en-us/windows/wsl/install-win10){:target="_blank"}, MacOs or any Linux distribution.
+There is also another important prerequisite: we are going to use a lot *bash* for our automation. In order to be able to run *bash* files, your development environment have to be one of the following:
+
+* A Linux based [Dev Containers for VSCode](https://code.visualstudio.com/docs/remote/containers){:target="_blank"}. This is my preferred approach: each developers can share the same environment while working on any kind of workstation where you can run VScode & [Docker](https://www.docker.com/){:target="_blank"} (so basically Windows 10, MacOS and most of the Linux distribution),
+* If you do not want to use Dev Containers, your workstation must be able to run natively *bash*, hence you will need either:
+  * A workstation running Linux (any distribution would do),
+  * A workstation running MacOS,
+  * A workstation running Windows 10 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10){:target="_blank"} installed. WSL2 starts in parallel of Windows 10 a Linux system (without GUI, just terminal based) - if you are not familiar with it I strongly encourage you to [learn more about it](https://docs.microsoft.com/en-us/windows/wsl/install-win10){:target="_blank"}.
+
+Let's now move to the code part!
 
 ## Overall architecture
 
@@ -212,7 +224,7 @@ steps:
     failTaskOnFailedTests: true
 ```
 
-> For a [Github action](https://github.com/features/actions){:target="_blank"} so syntax would be almost the same.
+> For a [Github action](https://github.com/features/actions){:target="_blank"} so syntax would almost be the same.
 
 As we can see above, the first task executes our *bash* file, the second and third publish the test and code coverage results into the pipeline output (so tabs, as seen above, can be shown).
 
@@ -234,7 +246,7 @@ appDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../Calculator" >/dev/null 2>&1 &
 testsDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../tests" >/dev/null 2>&1 && pwd )"
 
 python -m flake8 \
-        --exclude .git,__pycache__, $appDir $testsDir
+        --exclude .git,__pycache__, "$appDir" "$testsDir"
 ```
 
 With this script, I can test both my application source folder *Calculator* and the *tests* folder:
@@ -245,7 +257,7 @@ With this script, I can test both my application source folder *Calculator* and 
 
 ![Output Flake8]({{site.baseurl}}/assets/img/posts/2021-04-12-one-bash-rule-all/output-flake8.png)
 
-And by the way, I have 3 "flake8" errors ... that means my code cannot be pushed via PR - I mean I *could* push it, but the CI will fail ...
+And by the way, I have 3 "flake8" errors ... that means my PR would fail!
 
 As we did for the unit tests, we can now call this script from the pipeline, and have both our linter and unit tests executed:
 
@@ -264,17 +276,9 @@ As we did for the unit tests, we can now call this script from the pipeline, and
 
 ## One more thing ...
 
-As a developer, [I am lazy](https://www.forbes.com/sites/forbestechcouncil/2018/01/08/developers-are-lazy-and-thats-usually-a-good-thing/){:target="_blank"}, that means that typing in a terminal
+As a developer, I want things to be simple. Remembering a bunch of utils scripts to call can be confusing. Here is an approach we took that helped a lot: we've centralized all of our utils scripts calls into a [*Makefile*](https://en.wikipedia.org/wiki/Make_(software)){:target="_blank"}. We could see a *makefile* as a single entry point where custom commands can be run - and they can also be cascaded.
 
-```sh
-./utils/test.sh
-```
-
-even though I have autocompletion, annoys me. 
-
-This is where we can centralize all of our utils actions into a [*Makefile*](https://en.wikipedia.org/wiki/Make_(software)){:target="_blank"}. Well, we hijack a little bit the purpose of *make*, but still, it is easier for developer to remember *make* commands.
-
-Let's create a new file called *Makefile* at the root of our project!
+Let's create a new file called *Makefile* at the root of our project:
 
 ```makefile
 SHELL=/bin/bash
@@ -288,7 +292,9 @@ test:
 	. ./utils/test.sh
 ```
 
-Having that, I can simply run on my terminal:
+As you can see above, we are specifying *steps*, and each step call one of our *bash£ file.
+
+So now, I can simply execute in my terminal:
 
 ```sh
 make test
@@ -296,7 +302,9 @@ make test
 make linter
 ```
 
-I can of course combine both actions:
+Easier to remember, nah?
+
+I can also combine actions together:
 
 ```makefile
 SHELL=/bin/bash
@@ -323,7 +331,7 @@ to have all the checks running in a single command. My terminal will output any 
 
 # In conclusion
 
-We have seen in the article the power of *bash*, and, with one common file, how we can have all of our code quality checks done at the right time.
+We have seen in the article the power of *bash*, and, with one common file, how we can have all of our code quality checks done at the right time: for developers while they develop (either by calling directly the *bash* file or via *makefile*) and for the CI pipeline to ensure these same checks pass.
 
 Here is what I would consider the takeaway:
 
