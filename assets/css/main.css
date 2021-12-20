@@ -1511,3 +1511,9 @@ ul.task-list {
 input.task-list-item-checkbox {
   margin-right: 5px;
 }
+
+.quicklinks {
+  margin: 50px 0 0 5px;
+  vertical-align: top;
+  height: 100%;
+}
